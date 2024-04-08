@@ -3,6 +3,7 @@ package org.lia.commands;
 import org.lia.managers.CollectionManager;
 import org.lia.managers.CommandManager;
 import org.lia.managers.FileManager;
+import org.lia.tools.Response;
 
 public class RemoveHeadCommand implements Command {
     private static final long serialVersionUID = 1785464768755190753L;
@@ -19,9 +20,11 @@ public class RemoveHeadCommand implements Command {
         return "shows first element of collection and deletes it";
     }
 
-    public void execute() {
-        System.out.println(collectionManager.getProductCollection().pollFirst());
-        System.out.println("Element was successfully deleted");
+    public Response execute() {
+        Response response = new Response();
+        response.addAnswer(collectionManager.getProductCollection().pollFirst().toString());
+        response.addAnswer("Element was successfully deleted");
+        return response;
     }
 
     public void setCollectionManager(CollectionManager collectionManager) {

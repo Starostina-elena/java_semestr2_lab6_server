@@ -4,6 +4,7 @@ import org.lia.managers.CollectionManager;
 import org.lia.managers.CommandManager;
 import org.lia.managers.FileManager;
 import org.lia.models.Product;
+import org.lia.tools.Response;
 
 public class RemoveByIdCommand implements Command {
     private static final long serialVersionUID = 1785464768755190753L;
@@ -21,19 +22,21 @@ public class RemoveByIdCommand implements Command {
         return "removes element from collection by id";
     }
 
-    public void execute() {
+    public Response execute() {
+        Response response = new Response();
         try {
             Product product = collectionManager.getById(id);
-            System.out.println(product);
+            response.addAnswer(product.toString());
             collectionManager.removeFromCollection(product);
-            System.out.println("Product was successfully deleted");
+            response.addAnswer("Product was successfully deleted");
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Incorrect number of arguments for update command. Please try again");
+            response.addAnswer("Incorrect number of arguments for update command. Please try again");
         } catch (NumberFormatException e) {
-            System.out.println("id is not integer. Please try again");
+            response.addAnswer("id is not integer. Please try again");
         } catch (IllegalArgumentException e) {
-            System.out.println(e + ". Please try again");
+            response.addAnswer(e + ". Please try again");
         }
+        return response;
     }
 
     public void setCollectionManager(CollectionManager collectionManager) {

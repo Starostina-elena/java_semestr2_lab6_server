@@ -7,6 +7,7 @@ import org.lia.models.Coordinates;
 import org.lia.models.Organization;
 import org.lia.models.Product;
 import org.lia.models.UnitOfMeasure;
+import org.lia.tools.Response;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -31,7 +32,8 @@ public class AddIfMaxCommand implements Command {
                 "(Integer)manufactureCost";
     }
 
-    public void execute() {
+    public Response execute() {
+        Response response = new Response();
         try {
 
             Product max_product = collectionManager.getProductCollection().getFirst();
@@ -42,16 +44,17 @@ public class AddIfMaxCommand implements Command {
             }
             if (product.compareTo(max_product) > 0) {
                 collectionManager.addToCollection(product);
-                System.out.println("object was successfully added");
-                System.out.println(product);
+                response.addAnswer("object was successfully added");
+                response.addAnswer(product.toString());
             } else {
-                System.out.println("object is not max, it wasn't added");
+                response.addAnswer("object is not max, it wasn't added");
             }
         } catch (IllegalArgumentException e) {
-            System.out.println(e + ". Please try again");
+            response.addAnswer(e + ". Please try again");
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Incorrect number of arguments for add_if_max command. Please try again");
+            response.addAnswer("Incorrect number of arguments for add_if_max command. Please try again");
         }
+        return response;
     }
 
     public void setCollectionManager(CollectionManager collectionManager) {

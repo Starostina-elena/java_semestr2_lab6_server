@@ -7,6 +7,7 @@ import org.lia.models.Coordinates;
 import org.lia.models.Organization;
 import org.lia.models.Product;
 import org.lia.models.UnitOfMeasure;
+import org.lia.tools.Response;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -28,7 +29,8 @@ public class UpdateCommand implements Command {
         return "update product by it's id. Pattern: update (long)id";
     }
 
-    public void execute() {
+    public Response execute() {
+        Response response = new Response();
         //try {
 //
 //            System.out.println(product);
@@ -169,6 +171,7 @@ public class UpdateCommand implements Command {
 //        } catch (IllegalArgumentException e) {
 //            System.out.println(e + ". Please try again");
 //        }
+        return response;
     }
 
     public void setCollectionManager(CollectionManager collectionManager) {

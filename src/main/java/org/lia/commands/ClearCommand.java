@@ -3,6 +3,7 @@ package org.lia.commands;
 import org.lia.managers.CollectionManager;
 import org.lia.managers.CommandManager;
 import org.lia.managers.FileManager;
+import org.lia.tools.Response;
 
 import java.util.ArrayDeque;
 
@@ -22,9 +23,11 @@ public class ClearCommand implements Command {
         return "clears collection";
     }
 
-    public void execute() {
+    public Response execute() {
+        Response response = new Response();
         collectionManager.setProductCollection(new ArrayDeque<>());
-        System.out.println("Collection was successfully cleared");
+        response.addAnswer("Collection was successfully cleared");
+        return response;
     }
 
     public void setCollectionManager(CollectionManager collectionManager) {

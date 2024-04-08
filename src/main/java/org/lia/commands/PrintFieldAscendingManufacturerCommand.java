@@ -5,6 +5,7 @@ import org.lia.managers.CommandManager;
 import org.lia.managers.FileManager;
 import org.lia.models.Organization;
 import org.lia.models.Product;
+import org.lia.tools.Response;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,15 +26,17 @@ public class PrintFieldAscendingManufacturerCommand implements Command {
         return "shows all manufacturers in ascending orders";
     }
 
-    public void execute() {
+    public Response execute() {
+        Response response = new Response();
         List<Organization> orgList = new ArrayList<>();
         for (Product c : collectionManager.getProductCollection()) {
             orgList.add(c.getManufacturer());
         }
         Collections.sort(orgList);
         for (Organization c : orgList) {
-            System.out.println(c);
+            response.addAnswer(c.toString());
         }
+        return response;
     }
 
     public void setCollectionManager(CollectionManager collectionManager) {

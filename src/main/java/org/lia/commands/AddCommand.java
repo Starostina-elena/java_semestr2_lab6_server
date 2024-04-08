@@ -7,6 +7,7 @@ import org.lia.models.Coordinates;
 import org.lia.models.Organization;
 import org.lia.models.Product;
 import org.lia.models.UnitOfMeasure;
+import org.lia.tools.Response;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -30,16 +31,18 @@ public class AddCommand implements Command {
                 "Pattern: add (String)name (Integer)price(may be null, use empty string) (String)partNumber (Integer)manufactureCost";
     }
 
-    public void execute() {
+    public Response execute() {
+        Response response = new Response();
         try {
             product.setup();
             collectionManager.addToCollection(product);
-            System.out.println("object was successfully added");
+            response.addAnswer("object was successfully added");
         } catch (IllegalArgumentException e) {
-            System.out.println(e + ". Please try again");
+            response.addAnswer(e + ". Please try again");
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Incorrect number of arguments for add command. Please try again");
+            response.addAnswer("Incorrect number of arguments for add command. Please try again");
         }
+        return response;
     }
 
     public void setCollectionManager(CollectionManager collectionManager) {

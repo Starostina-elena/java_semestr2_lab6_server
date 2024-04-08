@@ -1,11 +1,9 @@
 package org.lia.managers;
 
 import org.lia.commands.*;
+import org.lia.tools.Response;
 
-import java.io.ByteArrayInputStream;
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -41,7 +39,6 @@ public class CommandManager {
         commandsManager.put("update", new UpdateCommand(this.collectionManager));
         commandsManager.put("remove_by_id", new RemoveByIdCommand(this.collectionManager));
         commandsManager.put("clear", new ClearCommand(this.collectionManager));
-        commandsManager.put("save", new SaveCommand(this.fileManager, this.collectionManager));
         commandsManager.put("remove_head", new RemoveHeadCommand(this.collectionManager));
         commandsManager.put("add_if_max", new AddIfMaxCommand(this.collectionManager));
         commandsManager.put("remove_lower", new RemoveLowerCommand(this.collectionManager));
@@ -68,7 +65,13 @@ public class CommandManager {
                         command.setCollectionManager(collectionManager);
                         command.setCommandManager(this);
                         command.setFileManager(fileManager);
-                        command.execute();
+                        Response response = command.execute();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ObjectOutputStream oos = new ObjectOutputStream(baos);
+                        oos.writeObject(response);
+                        byte[] secondaryBuffer = baos.toByteArray(); //TODO: зачем...
+                        ByteBuffer mainBuffer = ByteBuffer.wrap(secondaryBuffer);
+                        dc.send(mainBuffer, address);
                     } catch (EOFException | ClassNotFoundException e) {
                         System.out.println(e);
                     }

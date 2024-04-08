@@ -3,6 +3,7 @@ package org.lia.commands;
 import org.lia.managers.CollectionManager;
 import org.lia.managers.CommandManager;
 import org.lia.managers.FileManager;
+import org.lia.tools.Response;
 
 public class MinByIdCommand implements Command {
     private static final long serialVersionUID = 1785464768755190753L;
@@ -19,8 +20,10 @@ public class MinByIdCommand implements Command {
         return "shows element with min id";
     }
 
-    public void execute() {
-        System.out.println(collectionManager.getProductCollection().getFirst());
+    public Response execute() {
+        Response response = new Response();
+        response.addAnswer(collectionManager.getProductCollection().getFirst().toString());
+        return response;
     }
 
     public void setCollectionManager(CollectionManager collectionManager) {

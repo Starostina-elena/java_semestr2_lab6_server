@@ -4,7 +4,7 @@ import org.lia.managers.CollectionManager;
 import org.lia.managers.CommandManager;
 import org.lia.managers.FileManager;
 
-public class SaveCommand implements Command {
+public class SaveCommand {
 
     private FileManager fileManager;
     private CollectionManager collectionManager;

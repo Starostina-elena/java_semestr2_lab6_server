@@ -3,6 +3,7 @@ package org.lia.commands;
 import org.lia.managers.CollectionManager;
 import org.lia.managers.CommandManager;
 import org.lia.managers.FileManager;
+import org.lia.tools.Response;
 
 public class InfoCommand implements Command {
     private static final long serialVersionUID = 1785464768755190753L;
@@ -20,8 +21,10 @@ public class InfoCommand implements Command {
         return "shows short information on collection";
     }
 
-    public void execute() {
-        System.out.println(collectionManager.shortInfo());
+    public Response execute() {
+        Response response = new Response();
+        response.addAnswer(collectionManager.shortInfo());
+        return response;
     }
 
     public void setCollectionManager(CollectionManager collectionManager) {

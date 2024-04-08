@@ -4,6 +4,7 @@ import org.lia.managers.CollectionManager;
 import org.lia.managers.CommandManager;
 import org.lia.managers.FileManager;
 import org.lia.models.Product;
+import org.lia.tools.Response;
 
 public class RemoveLowerCommand implements Command {
     private static final long serialVersionUID = 1785464768755190753L;
@@ -21,7 +22,8 @@ public class RemoveLowerCommand implements Command {
         return "delete from collection all elements lower that selected. Pattern: remove_lower (long)id";
     }
 
-    public void execute() {
+    public Response execute() {
+        Response response = new Response();
         try {
             Product product = collectionManager.getById(id);
             int counter = 0;
@@ -31,14 +33,15 @@ public class RemoveLowerCommand implements Command {
                     collectionManager.removeFromCollection(c);
                 }
             }
-            System.out.println(counter + " products were successfully deleted");
+            response.addAnswer(counter + " products were successfully deleted");
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Incorrect number of arguments for remove_lower command. Please try again");
+            response.addAnswer("Incorrect number of arguments for remove_lower command. Please try again");
         } catch (NumberFormatException e) {
-            System.out.println("id is not integer. Please try again");
+            response.addAnswer("id is not integer. Please try again");
         } catch (IllegalArgumentException e) {
-            System.out.println(e + ". Please try again");
+            response.addAnswer(e + ". Please try again");
         }
+        return response;
     }
 
     public void setCollectionManager(CollectionManager collectionManager) {

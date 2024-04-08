@@ -4,6 +4,7 @@ import org.lia.managers.CollectionManager;
 import org.lia.managers.CommandManager;
 import org.lia.managers.FileManager;
 import org.lia.models.Product;
+import org.lia.tools.Response;
 
 public class CountByPartNumberCommand implements Command {
     private static final long serialVersionUID = 1785464768755190753L;
@@ -21,7 +22,8 @@ public class CountByPartNumberCommand implements Command {
         return "shows number of element with specified part number. Pattern: count_by_part_number (String)partNumber";
     }
 
-    public void execute() {
+    public Response execute() {
+        Response response = new Response();
         try {
             int cnt = 0;
             for (Product c : collectionManager.getProductCollection()) {
@@ -29,10 +31,11 @@ public class CountByPartNumberCommand implements Command {
                     cnt++;
                 }
             }
-            System.out.println("There are " + cnt +  " products with this partNumber");
+            response.addAnswer("There are " + cnt +  " products with this partNumber");
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Incorrect number of arguments for count_by_part_number command. Please try again");
+            response.addAnswer("Incorrect number of arguments for count_by_part_number command. Please try again");
         }
+        return response;
     }
 
     public void setCollectionManager(CollectionManager collectionManager) {
