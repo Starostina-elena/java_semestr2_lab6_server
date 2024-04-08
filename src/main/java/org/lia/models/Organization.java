@@ -1,10 +1,11 @@
 package org.lia.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**Organization class*/
-public class Organization implements Comparable<Organization> {
-
+public class Organization implements Comparable<Organization>, Serializable {
+    private static final long serialVersionUID = 17464768755190753L;
     private Long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private String fullName; //Поле может быть null

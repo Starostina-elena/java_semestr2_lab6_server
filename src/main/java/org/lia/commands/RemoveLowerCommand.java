@@ -1,11 +1,17 @@
 package org.lia.commands;
 
 import org.lia.managers.CollectionManager;
+import org.lia.managers.CommandManager;
+import org.lia.managers.FileManager;
 import org.lia.models.Product;
 
 public class RemoveLowerCommand implements Command {
+    private static final long serialVersionUID = 1785464768755190753L;
 
     private CollectionManager collectionManager;
+    private FileManager fileManager;
+    private CommandManager commandManager;
+    private long id;
 
     public RemoveLowerCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;
@@ -15,9 +21,9 @@ public class RemoveLowerCommand implements Command {
         return "delete from collection all elements lower that selected. Pattern: remove_lower (long)id";
     }
 
-    public void execute(String[] arguments) {
+    public void execute() {
         try {
-            Product product = collectionManager.getById(Integer.parseInt(arguments[1]));
+            Product product = collectionManager.getById(id);
             int counter = 0;
             for (Product c : collectionManager.getProductCollection()) {
                 if (product.compareTo(c) > 0) {
@@ -33,6 +39,18 @@ public class RemoveLowerCommand implements Command {
         } catch (IllegalArgumentException e) {
             System.out.println(e + ". Please try again");
         }
+    }
+
+    public void setCollectionManager(CollectionManager collectionManager) {
+        this.collectionManager = collectionManager;
+    }
+
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
+
+    public void setCommandManager(CommandManager commandManager) {
+        this.commandManager = commandManager;
     }
 
 }

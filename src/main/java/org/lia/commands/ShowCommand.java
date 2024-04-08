@@ -1,10 +1,15 @@
 package org.lia.commands;
 
 import org.lia.managers.CollectionManager;
+import org.lia.managers.CommandManager;
+import org.lia.managers.FileManager;
 
 public class ShowCommand implements Command {
+    private static final long serialVersionUID = 1785464768755190753L;
 
     private CollectionManager collectionManager;
+    private FileManager fileManager;
+    private CommandManager commandManager;
 
     public ShowCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;
@@ -14,8 +19,20 @@ public class ShowCommand implements Command {
         return "shows elements in collection";
     }
 
-    public void execute(String[] arguments) {
+    public void execute() {
         collectionManager.show();
+    }
+
+    public void setCollectionManager(CollectionManager collectionManager) {
+        this.collectionManager = collectionManager;
+    }
+
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
+
+    public void setCommandManager(CommandManager commandManager) {
+        this.commandManager = commandManager;
     }
 
 }

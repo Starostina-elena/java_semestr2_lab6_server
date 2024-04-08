@@ -1,8 +1,10 @@
 package org.lia.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Coordinates {
+public class Coordinates implements Serializable {
+    private static final long serialVersionUID = 85464768755190753L;
 
     private long x;
     private double y; //Максимальное значение поля: 113

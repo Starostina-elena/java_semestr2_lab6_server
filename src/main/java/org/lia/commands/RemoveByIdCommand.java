@@ -1,11 +1,17 @@
 package org.lia.commands;
 
 import org.lia.managers.CollectionManager;
+import org.lia.managers.CommandManager;
+import org.lia.managers.FileManager;
 import org.lia.models.Product;
 
 public class RemoveByIdCommand implements Command {
+    private static final long serialVersionUID = 1785464768755190753L;
 
     private CollectionManager collectionManager;
+    private FileManager fileManager;
+    private CommandManager commandManager;
+    private long id;
 
     public RemoveByIdCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;
@@ -15,9 +21,9 @@ public class RemoveByIdCommand implements Command {
         return "removes element from collection by id";
     }
 
-    public void execute(String[] arguments) {
+    public void execute() {
         try {
-            Product product = collectionManager.getById(Integer.parseInt(arguments[1]));
+            Product product = collectionManager.getById(id);
             System.out.println(product);
             collectionManager.removeFromCollection(product);
             System.out.println("Product was successfully deleted");
@@ -28,6 +34,18 @@ public class RemoveByIdCommand implements Command {
         } catch (IllegalArgumentException e) {
             System.out.println(e + ". Please try again");
         }
+    }
+
+    public void setCollectionManager(CollectionManager collectionManager) {
+        this.collectionManager = collectionManager;
+    }
+
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
+
+    public void setCommandManager(CommandManager commandManager) {
+        this.commandManager = commandManager;
     }
 
 }
