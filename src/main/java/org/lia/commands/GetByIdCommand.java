@@ -6,31 +6,30 @@ import org.lia.managers.FileManager;
 import org.lia.models.Product;
 import org.lia.tools.Response;
 
-public class ShowCommand implements Command {
+public class GetByIdCommand implements Command {
     private static final long serialVersionUID = 1785464768755190753L;
 
     private CollectionManager collectionManager;
     private FileManager fileManager;
     private CommandManager commandManager;
+    private long id;
 
-    public ShowCommand(CollectionManager collectionManager) {
+    public GetByIdCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;
     }
 
     public String description() {
-        return "shows elements in collection";
+        return "returns element with this id";
     }
 
     public Response execute() {
         Response response = new Response();
-        long cnt = 0;
-        for (Product c : collectionManager.getProductCollection()) {
-            if (cnt > 200) {
-                response.addAnswer(collectionManager.getNumberOfElements() - cnt + " more elements");
-                break;
-            }
-            response.addAnswer(c.toString());
-            cnt++;
+        try {
+            Product answer = collectionManager.getById(id);
+            response.addAnswer(answer.toString());
+            response.setProduct(answer);
+        } catch (IllegalStateException e) {
+            response.addAnswer(e.toString());
         }
         return response;
     }

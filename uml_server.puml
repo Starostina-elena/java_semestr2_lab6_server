@@ -1,0 +1,346 @@
+@startuml
+class org.lia.commands.RemoveByIdCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
+- long id
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.commands.AddCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
+- Product product
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.managers.FileManager {
+- String filename
+- XStream xstream
++ String getFilename()
++ boolean checkFileExists()
++ void writeCollection(ArrayDeque<Product>)
++ CollectionManager readCollection()
+}
+
+
+class org.lia.commands.UpdateCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
+- Product product
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.Main {
++ {static} void main(String[])
+}
+
+class org.lia.commands.RemoveLowerCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
+- long id
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.models.Coordinates {
+- {static} long serialVersionUID
+- long x
+- double y
++ long getX()
++ double getY()
++ void setX(long)
++ void setY(double)
++ boolean equals(Object)
++ int hashCode()
++ String toString()
+}
+
+
+class org.lia.managers.CollectionManager {
+- ArrayDeque<Product> productCollection
+- java.time.LocalDate creationDate
++ ArrayDeque<Product> getProductCollection()
++ long getNumberOfElements()
++ void setProductCollection(ArrayDeque<Product>)
++ void addToCollection(Product)
++ void removeFromCollection(Product)
++ void changeIdIndex()
++ Product getById(long)
++ String shortInfo()
++ void show()
++ String toString()
+}
+
+
+class org.lia.commands.ClearCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.models.Organization {
+- {static} long serialVersionUID
+- Long id
+- String name
+- String fullName
+- Integer employeesCount
+- {static} Long currentId
++ Long getId()
++ String getName()
++ void setName(String)
++ String getFullName()
++ void setFullName(String)
++ Integer getEmployeesCount()
++ void setEmployeesCount(Integer)
++ {static} void updateId(long)
++ boolean equals(Object)
++ int hashCode()
++ String toString()
++ int compareTo(Organization)
+}
+
+
+interface org.lia.commands.Command {
+~ Response execute()
+~ void setCollectionManager(CollectionManager)
+~ void setFileManager(FileManager)
+~ void setCommandManager(CommandManager)
+~ String description()
+}
+
+class org.lia.commands.RemoveHeadCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+enum org.lia.models.UnitOfMeasure {
++  CENTIMETERS
++  SQUARE_METERS
++  MILLILITERS
++  GRAMS
+}
+
+class org.lia.commands.AddIfMaxCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
+- Product product
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.commands.CountByPartNumberCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
+- String partNumber
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.managers.CommandManager {
+- Map<String,Command> commandsManager
+- CollectionManager collectionManager
+- FileManager fileManager
+~ DatagramChannel dc
+~ ByteBuffer buf
+~ InetAddress host
+~ int port
+~ SocketAddress addr
++ void listen()
++ void getInputFromConsole()
++ Map<String,Command> getCommandsList()
++ CollectionManager getCollectionManager()
++ FileManager getFileManager()
+}
+
+
+class org.lia.models.Product {
+- {static} long serialVersionUID
+- long id
+- String name
+- Coordinates coordinates
+- java.time.LocalDate creationDate
+- Integer price
+- String partNumber
+- Integer manufactureCost
+- UnitOfMeasure unitOfMeasure
+- Organization manufacturer
+- {static} long currentId
++ void setup()
++ long getId()
++ String getName()
++ void setName(String)
++ Coordinates getCoordinates()
++ void setCoordinates(Coordinates)
++ java.time.LocalDate getCreationDate()
++ Integer getPrice()
++ void setPrice(Integer)
++ String getPartNumber()
++ void setPartNumber(String)
++ Integer getManufactureCost()
++ void setManufactureCost(Integer)
++ UnitOfMeasure getUnitOfMeasure()
++ void setUnitOfMeasure(UnitOfMeasure)
++ Organization getManufacturer()
++ void setManufacturer(Organization)
++ boolean equals(Object)
++ int hashCode()
++ String toString()
++ int compareTo(Product)
++ {static} void updateId(long)
+}
+
+
+class org.lia.commands.GetByIdCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
+- long id
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.commands.MinByIdCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.commands.ShowCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.commands.InfoCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.commands.PrintFieldAscendingManufacturerCommand {
+- {static} long serialVersionUID
+- CollectionManager collectionManager
+- FileManager fileManager
+- CommandManager commandManager
++ String description()
++ Response execute()
++ void setCollectionManager(CollectionManager)
++ void setFileManager(FileManager)
++ void setCommandManager(CommandManager)
+}
+
+
+class org.lia.tools.Response {
+- {static} long serialVersionUID
+- Product product
+- ArrayList<String> answer
++ Product getProduct()
++ void setProduct(Product)
++ ArrayList<String> getAnswer()
++ void addAnswer(String)
+}
+
+
+
+
+org.lia.commands.Command <|.. org.lia.commands.RemoveByIdCommand
+org.lia.commands.Command <|.. org.lia.commands.AddCommand
+org.lia.commands.Command <|.. org.lia.commands.UpdateCommand
+org.lia.commands.Command <|.. org.lia.commands.RemoveLowerCommand
+java.io.Serializable <|.. org.lia.models.Coordinates
+org.lia.commands.Command <|.. org.lia.commands.ClearCommand
+org.lia.models.Comparable <|.. org.lia.models.Organization
+java.io.Serializable <|.. org.lia.models.Organization
+java.io.Serializable <|-- org.lia.commands.Command
+org.lia.commands.Command <|.. org.lia.commands.RemoveHeadCommand
+org.lia.commands.Command <|.. org.lia.commands.AddIfMaxCommand
+org.lia.commands.Command <|.. org.lia.commands.CountByPartNumberCommand
+org.lia.models.Comparable <|.. org.lia.models.Product
+java.io.Serializable <|.. org.lia.models.Product
+org.lia.commands.Command <|.. org.lia.commands.GetByIdCommand
+org.lia.commands.Command <|.. org.lia.commands.MinByIdCommand
+org.lia.commands.Command <|.. org.lia.commands.ShowCommand
+org.lia.commands.Command <|.. org.lia.commands.InfoCommand
+org.lia.commands.Command <|.. org.lia.commands.PrintFieldAscendingManufacturerCommand
+java.io.Serializable <|.. org.lia.tools.Response
+@enduml

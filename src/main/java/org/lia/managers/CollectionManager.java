@@ -20,6 +20,10 @@ public class CollectionManager {
         return productCollection;
     }
 
+    public long getNumberOfElements() {
+        return productCollection.size();
+    }
+
     public void setProductCollection(ArrayDeque<Product> productCollection) {
         this.productCollection = productCollection;
     }

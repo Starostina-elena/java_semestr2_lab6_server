@@ -22,7 +22,7 @@ public class CommandManager {
     private FileManager fileManager;
 
     DatagramChannel dc;
-    ByteBuffer buf = ByteBuffer.allocate(1 << 16 - 1); // TODO: что за число и почему именно оно
+    ByteBuffer buf = ByteBuffer.allocate(1 << 17 - 1);
     InetAddress host;
     int port = 6789;
     SocketAddress addr = new InetSocketAddress(port);
@@ -33,19 +33,6 @@ public class CommandManager {
         this.collectionManager = collectionManager;
         this.fileManager = fileManager;
 
-        commandsManager.put("add", new AddCommand(this.collectionManager));
-        commandsManager.put("info", new InfoCommand(this.collectionManager));
-        commandsManager.put("show", new ShowCommand(this.collectionManager));
-        commandsManager.put("update", new UpdateCommand(this.collectionManager));
-        commandsManager.put("remove_by_id", new RemoveByIdCommand(this.collectionManager));
-        commandsManager.put("clear", new ClearCommand(this.collectionManager));
-        commandsManager.put("remove_head", new RemoveHeadCommand(this.collectionManager));
-        commandsManager.put("add_if_max", new AddIfMaxCommand(this.collectionManager));
-        commandsManager.put("remove_lower", new RemoveLowerCommand(this.collectionManager));
-        commandsManager.put("min_by_id", new MinByIdCommand(this.collectionManager));
-        commandsManager.put("count_by_part_number", new CountByPartNumberCommand(this.collectionManager));
-        commandsManager.put("print_field_ascending_manufacturer", new PrintFieldAscendingManufacturerCommand(this.collectionManager));
-
     }
 
     public void listen() {
@@ -53,8 +40,8 @@ public class CommandManager {
             dc = DatagramChannel.open();
             dc.bind(addr);
             dc.configureBlocking(false);
-            System.out.println("connection created");
             while (true) {
+                getInputFromConsole();
                 SocketAddress address = dc.receive(buf);
                 if (address != null) {
                     buf.flip();
@@ -72,25 +59,49 @@ public class CommandManager {
                         byte[] secondaryBuffer = baos.toByteArray(); //TODO: зачем...
                         ByteBuffer mainBuffer = ByteBuffer.wrap(secondaryBuffer);
                         dc.send(mainBuffer, address);
+                    } catch (StreamCorruptedException e) {
+                        System.out.println("Bad packet");
+                        Response response = new Response();
+                        response.addAnswer("Protocol error. Please try again");
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ObjectOutputStream oos = new ObjectOutputStream(baos);
+                        oos.writeObject(response);
+                        byte[] secondaryBuffer = baos.toByteArray();
+                        ByteBuffer mainBuffer = ByteBuffer.wrap(secondaryBuffer);
+                        dc.send(mainBuffer, address);
                     } catch (EOFException | ClassNotFoundException e) {
                         System.out.println(e);
                     }
-//                    Request request = (Request) is.readObject();
-//                    logger.info("receive request, deserialize request");
-//                    String commandMessage = (String) request.getCommandName();
-//                    if (commands.containsKey(commandMessage)) {
-//                        AbstractCommand commandExe = commands.get(commandMessage);
-//                        CommandResultDto commandResultDto = commandExe.execute(request, collectionManager,
-//                                historyManagerImpl);
-//                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                        ObjectOutputStream oos = new ObjectOutputStream(baos);
-//                        oos.writeObject(commandResultDto);
-//                        logger.info("serialize result");
-//                        byte[] secondaryBuffer = baos.toByteArray();
-//                        ByteBuffer mainBuffer = ByteBuffer.wrap(secondaryBuffer);
-//                        server.send(mainBuffer, address);
-//                        logger.info("By server send data to client");
-//                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void getInputFromConsole() {
+        try {
+            if (System.in.available() > 0) {
+                Scanner in = new Scanner(System.in);
+                String command = in.nextLine();
+                if (command.equals("save")) {
+                    this.fileManager.writeCollection(collectionManager.getProductCollection());
+                } else if (command.equals("exit")) {
+                    System.out.println("Do you want to save your collection? Y/n");
+                    System.out.print("> ");
+                    String answer = in.nextLine().toUpperCase();
+                    while (!answer.equals("Y") & !answer.equals("N")) {
+                        System.out.println("Wrong input, try again. Do you want to save the collection? Y/n");
+                        System.out.print("> ");
+                        answer = in.nextLine().toUpperCase();
+                    }
+                    if (answer.equals("Y")) {
+                        this.fileManager.writeCollection(collectionManager.getProductCollection());
+                    }
+                    System.out.println("goodbye");
+                    System.exit(0);
+                } else {
+                    System.out.println("Unknown command, please try again");
                 }
             }
         } catch (IOException e) {
